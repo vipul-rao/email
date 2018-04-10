@@ -116,8 +116,8 @@ def guess_email():
         req_id+='_{0}'.format(list_size);
         print("parsed length:",list_size)
         executor.submit(parse_csv_pool,email_list,req_id)
-        return jsonify({"response":req_id,"url":'/results?rid='+req_id});
-        #return redirect(url_for('results',rid=req_id))
+        #return jsonify({"response":req_id,"url":'/results?rid='+req_id});
+        return redirect(url_for('results',rid=req_id))
     return "Hello"
     
     
