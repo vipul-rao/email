@@ -10,8 +10,6 @@ from web_app.greq import verify;
 from collections import OrderedDict
 from datetime import datetime
 from web_app.permutator import *
-import clearbit
-clearbit.key = 'sk_f104a33b0acba1831224e8e02b00c6b6'
 
 # DOCS https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor
 executor = ThreadPoolExecutor(2)
