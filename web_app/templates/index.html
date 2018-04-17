@@ -9,6 +9,19 @@
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"> </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+    <script>
+        function validateForm()
+        {
+            var x = document.forms["myform"]["iname"].value;
+            if (x == " ")
+            {
+                alert("Name must be filled out");
+                return true;
+            }
+        }
+    </script>
     
     
     <!--[if lte IE 8]>
@@ -32,139 +45,23 @@
 </head>
 <body>
 
-<div class="header" id="nav">
-    <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed custom-restricted">
-        <a class="pure-menu-heading" href="">Email Spider</a>
-        
-        <ul class="pure-menu-list">
-            <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover"><a href="#" class="pure-menu-link">
-                Verify Email</a>
-                <ul class="pure-menu-children custom-list" 
-                style="width:100%;border:none;">
-                    <li class="pure-menu-item"><a href="#" id="verify_btn" class="pure-menu-link">Single</a></li>
-                    <li class="pure-menu-item"><a href="#" id="add_csv" class="pure-menu-link">Multiple</a></li>
-                </ul>
-            </li>
-            
-            <!--<li class="pure-menu-item"><a href="#"  class="pure-menu-link">upload csv</a></li>-->
-            <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover"><a href="#" class="pure-menu-link">
-                Discover Email</a>
-                <ul class="pure-menu-children custom-list" 
-                style="width:100%;border:1px solid #ddd;">
-                    <li class="pure-menu-item"><a href="#" id="guess_btn" class="pure-menu-link">Single</a></li>
-                    <li class="pure-menu-item"><a href="#" id="guess_file_btn" class="pure-menu-link">Multiple</a></li>
-                </ul>
-            </li>
-            
-            <li class="pure-menu-item"><a href="https://company-to-domain.herokuapp.com/" class="pure-menu-link">Company-to-domain</a></li>
-            <!--<li class="pure-menu-item"><a href="#" id="guess_file_btn" class="pure-menu-link">Guess Email(CSV)</a></li>-->
-            <!--<li class="pure-menu-item"><a href="#"  class="pure-menu-link">Jobs</a>-->
-            <!--</li>-->
-            <li class="pure-menu-item"><a href="https://engage48-csv.herokuapp.com/" class="pure-menu-link">Engage-CSV</a></li>
-        </ul>
-    </div>
-</div>
 
-<div class="splash-container pure-img">
-            
-   
-   <form target="_blank" action="{{ url_for('handle_email') }}" method="post" id="email">
-    <div class="splash">
-        <input type="text" class="input-box" id="email" placeholder="enter email here" name="email"> 
-        <p class="splash-subhead">
-        Email spider can find thousand of emails in seconds.
-        </p>
-        <p> 
-            <input type="submit" value="Submit" class="pure-button" id="search-btn" value="Get Started">
-        </p>
-    </div>
-    </form>
-      
-       <form target="_blank" action="{{ url_for('handle_emailList') }}"  class="" id="csv_file" method=post enctype=multipart/form-data style="display:none;" >
-    <div class="splash">
-        <input type="file" id="csv_file" class="input-box" value="browse..." name="file">
-        <p class="splash-subhead">
-        Upload a csv file to verify emails.
-        </p>
-        <p> 
-            <input type="submit" value="Upload" class="pure-button" id="search-btn" value="Get Started">
-        </p>
-    </div>
-    </form> 
-      
-    
-    <form target="_blank" action="{{ url_for('guess_email') }}" method="post" id="guess_email" style="display:none;">
-    <div class="splash">
-        <input type="text" class="input-box" id="fname" placeholder="first name" name="fname"> 
-        
-        <input type="text" class="input-box" id="lname" placeholder="last name" name="lname"> 
-        <input type="text" class="input-box" id="dname" placeholder="domain.com" name="dname"> 
-        
-        <p class="splash-subhead">
-        Enter name and domain to guess email id of someone.
-        </p>
-        <p> 
-            <input type="submit" value="Submit" class="pure-button" id="search-btn" value="Get Started">
-        </p>
-    </div>
-    </form>
-    
-    
-    <form target="_blank" action="{{ url_for('handle_guessList') }}"  class="" id="guess_file" method=post enctype=multipart/form-data style="display:none;" >
-    <div class="splash">
-        <input type="file" id="csv_file" class="input-box" value="browse..." name="file">
-        <p class="splash-subhead">
-        <span style="">Upload a csv file to Discover emails.<br/> File must contain firstname,lastname,domain columns.</span>
-        </p>
-        <p> 
-            <input type="submit" value="Upload" class="pure-button" id="search-btn" value="Get Started">
-        </p>
-    </div>
-    </form>
-</div>
-
-<div class="content-wrapper" id="login" >
+<div id="login" >
 
     <div class="content" id="login" >
-        <h2 class="content-head is-center">Please register or sign in to continue</h2>
-        
-
-        <div class="pure-g">
+        <h2 class="content-head is-center">Please login to use emailspider</h2>
               <div class="l-box-lrg pure-u-1 pure-u-md-2-5" id="login-col">
                <h2>Log in</h2>
-                <form class="pure-form pure-form-stacked">
+                <form class="pure-form pure-form-stacked" method="post" action="{{ url_for('inner') }}">
                         <fieldset>
                             <label for="name">Your Name</label>
-                            <input id="name" type="text" placeholder="Your Name">
+                            <input id="name" name="name" type="text" placeholder="Your Name">
                             <label for="password">Your Password</label>
-                        <input id="password" type="password" placeholder="Your Password">
+                        <input id="password" name="password" type="password" placeholder="Your Password">
                         <button type="submit" class="pure-button">Log in</button>
                         </fieldset>
                     </form>
             </div>
-            <div class="col-divider"></div>
-            <div class="l-box-lrg pure-u-1 pure-u-md-2-5" id="signup-col">
-               <h2>Sign up</h2>
-                <form class="pure-form pure-form-stacked">
-                    <fieldset>
-
-                        <label for="name">Your Name</label>
-                        <input id="name" type="text" placeholder="Your Name">
-
-
-                        <label for="email">Your Email</label>
-                        <input id="email" type="email" placeholder="Your Email">
-
-                        <label for="password">Your Password</label>
-                        <input id="password" type="password" placeholder="Your Password">
-
-                        <button type="submit" class="pure-button">Sign Up</button>
-                    </fieldset>
-                </form>
-            </div>
-
-         
-        </div>
 
     </div>
 
