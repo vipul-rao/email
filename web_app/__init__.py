@@ -1,5 +1,4 @@
 import os, requests, json, sys, traceback
-import pymysql
 from flask import Flask, url_for, render_template, jsonify, request, Response, redirect
 from werkzeug import secure_filename
 from werkzeug.routing import RequestRedirect
@@ -157,29 +156,6 @@ def recursive_len(item):
 @app.route('/logout')
 def logout():
     return redirect(url_for('index'))
-
-
-@app.route('/getuser', methods=['POST'])
-def getuser():
-    name = request.form['iname']
-    email = request.form['iemail']
-    password = request.form['ipassword']
-    if (name == "" or email == "" or password == ""):
-        return render_template('index.html');
-    else:
-
-        # Open database connection
-        db = pymysql.connect("localhost", "root", "root", "email")
-
-        # prepare a cursor object using cursor() method
-        cursor = db.cursor()
-        print(name, password, email)
-        sql = "insert into signup VALUES('%s', '%s', '%s')" % \
-              (name, email, password)
-        #cursor.execute("INSERT INTO signup VALUES (%s,%s,%s)", (name, email, password))
-        cursor.execute(sql)
-        db.commit()
-        return render_template('index.html');
 
 
 @app.route('/guesses', methods=['GET', 'POST'])
