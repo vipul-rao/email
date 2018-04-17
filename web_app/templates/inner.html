@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Email Spider lets you verify and validate thousands of emails in seconds.">
+    <title>Email Spider | Find anyone's email</title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"> </script>
+
+
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-old-ie-min.css">
+    <![endif]-->
+    <!--[if gt IE 8]><!-->
+        <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css">
+    <!--<![endif]-->
+
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+
+
+        <!--[if lte IE 8]>
+            <link rel="stylesheet" href="{{url_for('static', filename='style-old.css')}}">
+        <![endif]-->
+        <!--[if gt IE 8]><!-->
+            <link rel="stylesheet" href="{{url_for('static', filename='style2.css')}}">
+        <!--<![endif]-->
+
+
+</head>
+<body>
+
+<div class="header" id="nav">
+    <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed custom-restricted">
+        <a class="pure-menu-heading" href="">Email Spider</a>
+
+        <ul class="pure-menu-list">
+            <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover"><a href="#" class="pure-menu-link">
+                Verify Email</a>
+                <ul class="pure-menu-children custom-list"
+                style="width:100%;border:none;">
+                    <li class="pure-menu-item"><a href="#" id="verify_btn" class="pure-menu-link">Single</a></li>
+                    <li class="pure-menu-item"><a href="#" id="add_csv" class="pure-menu-link">Multiple</a></li>
+                </ul>
+            </li>
+
+            <!--<li class="pure-menu-item"><a href="#"  class="pure-menu-link">upload csv</a></li>-->
+            <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover"><a href="#" class="pure-menu-link">
+                Discover Email</a>
+                <ul class="pure-menu-children custom-list"
+                style="width:100%;border:1px solid #ddd;">
+                    <li class="pure-menu-item"><a href="#" id="guess_btn" class="pure-menu-link">Single</a></li>
+                    <li class="pure-menu-item"><a href="#" id="guess_file_btn" class="pure-menu-link">Multiple</a></li>
+                </ul>
+            </li>
+
+            <li class="pure-menu-item"><a href="https://company-to-domain.herokuapp.com/" class="pure-menu-link">Company-to-domain</a></li>
+            <!--<li class="pure-menu-item"><a href="#" id="guess_file_btn" class="pure-menu-link">Guess Email(CSV)</a></li>-->
+            <!--<li class="pure-menu-item"><a href="#"  class="pure-menu-link">Jobs</a>-->
+            <!--</li>-->
+            <li class="pure-menu-item"><a href="https://engage48-csv.herokuapp.com/" class="pure-menu-link">Engage-CSV</a></li>
+            <li class="pure-menu-item"><a class="pure-menu-link" href="{{ url_for('logout') }}">Log Out</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="splash-container pure-img">
+
+
+   <form target="_blank" action="{{ url_for('handle_email') }}" method="post" id="email">
+    <div class="splash">
+        <input type="text" class="input-box" id="email" placeholder="enter email here" name="email">
+        <p class="splash-subhead">
+        Email spider can find thousand of emails in seconds.
+        </p>
+
+
+
+
+
+        <p>
+            <input type="submit" value="Submit" class="pure-button" id="search-btn" value="Get Started">
+        </p>
+    </div>
+    </form>
+
+       <form target="_blank" action="{{ url_for('handle_emailList') }}"  class="" id="csv_file" method=post enctype=multipart/form-data style="display:none;" >
+    <div class="splash">
+        <input type="file" id="csv_file" class="input-box" value="browse..." name="file">
+        <p class="splash-subhead">
+        Upload a csv file to verify emails.
+        </p>
+        <p>
+            <input type="submit" value="Upload" class="pure-button" id="search-btn" value="Get Started">
+        </p>
+    </div>
+    </form>
+
+
+    <form target="_blank" action="{{ url_for('guess_email') }}" method="post" id="guess_email" style="display:none;">
+    <div class="splash">
+        <input type="text" class="input-box" id="fname" placeholder="first name" name="fname">
+
+        <input type="text" class="input-box" id="lname" placeholder="last name" name="lname">
+        <input type="text" class="input-box" id="dname" placeholder="domain.com" name="dname">
+
+        <p class="splash-subhead">
+        Enter name and domain to guess email id of someone.
+        </p>
+        <p>
+            <input type="submit" value="Submit" class="pure-button" id="search-btn" value="Get Started">
+        </p>
+    </div>
+    </form>
+
+
+    <form target="_blank" action="{{ url_for('handle_guessList') }}"  class="" id="guess_file" method=post enctype=multipart/form-data style="display:none;" >
+    <div class="splash">
+        <input type="file" id="csv_file" class="input-box" value="browse..." name="file">
+        <p class="splash-subhead">
+        <span style="">Upload a csv file to Discover emails.<br/> File must contain firstname,lastname,domain columns.</span>
+        </p>
+
+
+        <p>
+            <input type="submit" value="Upload" class="pure-button" id="search-btn" value="Get Started">
+        </p>
+    </div>
+    </form>
+
+
+    <form target="_blank" action="{{ url_for('one_domain') }}" method="post" id="one_domain1" style="display:none;">
+    <div class="splash">
+        <input type="text" class="input-box" id="cname" placeholder="Company name" name="cname">
+        <p class="splash-subhead">
+        Enter name and domain to guess email id of someone.
+        </p>
+        <p>
+            <input type="submit" value="Submit" class="pure-button" id="search-btn" value="Get Started">
+        </p>
+    </div>
+    </form>
+</div>
+
+
+<script type="text/javascript" src="{{url_for('static', filename='script6.js')}}"></script>
+
+</body>
+</html>
