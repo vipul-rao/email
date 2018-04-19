@@ -1,4 +1,6 @@
 import os, requests, json, sys, traceback
+import pymysql
+import pandas as pd
 from flask import Flask, url_for, render_template, jsonify, request, Response, redirect
 from werkzeug import secure_filename
 from werkzeug.routing import RequestRedirect
@@ -10,6 +12,7 @@ from web_app.greq import verify;
 from collections import OrderedDict
 from datetime import datetime
 from web_app.permutator import *
+APP__ROOT = os.path.dirname(os.path.abspath(__file__))
 
 # DOCS https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor
 executor = ThreadPoolExecutor(2)
@@ -61,19 +64,20 @@ def index():
 
 @app.route('/inner', methods=['GET', 'POST'])
 def inner():
-    # login to email
-    request.method == 'POST'
+    global ic
     name = request.form['name']
     password = request.form['password']
-    if (name == "" or password == ""):
+    if name == "" or password == "":
         return render_template('index.html');
     else:
-        print(name)
-        if name == "admin" and password == "admin":
-            return render_template('inner.html');
-        else:
-            return render_template('index.html');
-
+        # Reading the file everytime will degrade the function performance
+        df = pd.read_csv("login.csv", sep=',', encoding="utf-8")
+        for index,row in df.iterrows():
+            if row['name'] == name and row['password'] == password:
+                print('sucess')
+                return render_template('inner.html');
+        data = "       PLEASE ENTER VALID USERNAME AND PASSWORD TO LOGIN               "
+        return render_template('index.html', records=data, title='User');
 
 @app.route('/email', methods=['POST'])
 def handle_email():
@@ -154,6 +158,23 @@ def recursive_len(item):
 @app.route('/logout')
 def logout():
     return redirect(url_for('index'))
+
+
+@app.route('/getuser', methods=['POST'])
+def getuser():
+    iname = request.form['iname']
+    iemail = request.form['iemail']
+    ipassword = request.form['ipassword']
+    if (iname == "" or iemail == "" or ipassword == ""):
+        return render_template('index.html');
+    else:
+        df = pd.read_csv("login.csv", sep=',', encoding="utf-8")
+        df2 = df.append(pd.DataFrame([[iname, ipassword, iemail]], columns
+        =df.columns))
+        df2.to_csv("login.csv", index=False)
+        print(df2)
+        data = "       USER SUCESSFULLY CREATED NOW YOU CAN LOGIN               "
+        return render_template('index.html', records=data, title='User');
 
 
 @app.route('/guesses', methods=['GET', 'POST'])
