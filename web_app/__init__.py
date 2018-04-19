@@ -1,5 +1,4 @@
 import os, requests, json, sys, traceback
-import pymysql
 import pandas as pd
 from flask import Flask, url_for, render_template, jsonify, request, Response, redirect
 from werkzeug import secure_filename
